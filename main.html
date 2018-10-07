@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <title>Zulu and Julian Date and Time Calculator</title>
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet"
+    type="text/css">
+    <style>
+    body{
+      background-color: gold;
+      height: 100%;
+      width: 100%
+    }
+    h2{
+      font-family: "Source Code Pro",sans-serif;
+      color: gray;
+      font-size: 160px;
+    }
+    .container{
+      max-width: 500px;
+      margin:auto;
+      padding: 140px 0;
+    }
+    .border{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      border-color: black;
+      border-width: 10px;
+      border-radius: 50%;
+      border-style: solid;
+    }
+    .julian{
+      font-family: "Source Code Pro", sans-serif;
+      color: black;
+      font-size: 60px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+    }
+    .seconds{
+      font-family: "Source Code Pro", sans-serif;
+      color: black;
+      font-size: 80px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div class="julian"><div id="date"></div></div>
+    <div class="container"><div class="border"><h2 id="time"></h2></div></div>
+    <div class="seconds"><div id="sec"></div></div>
+    <script>
+
+    //Instance date object
+    var d = new Date();
+
+
+    //Variables for time
+    var h = d.getHours();
+    var m = d.getMinutes();
+    var s = d.getSeconds();
+    var format = h + ':' + m;
+
+    //Variable for Julian date
+    var index_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var current_day = d.getDate();
+    var current_month = d.getMonth();
+    var total_day = 0;
+    var counter = 0;
+
+    //Number days to current month
+    while (counter < current_month) {
+      total_day+= index_month[counter];
+      counter++;
+    }
+
+    //All previous months plus number of days passed in current month
+    total_day+= current_day;
+    julian_day = total_day % 100;
+    document.getElementById("date").innerHTML = julian_day;
+
+    //Ensure that time is in 4 digit format
+
+          if (h < 10) {
+            h = '0' + h;
+          }
+
+          if (m < 10){
+            m = '0' + m;
+          }
+
+    //Updates time every second
+    var updateTime = function(){
+      d = new Date();
+      h = d.getHours();
+      m = d.getMinutes();
+      s = d.getSeconds();
+
+      //Ensures 4 digit format
+      if (h < 10) {
+        h = '0' + h;
+      }
+
+      if (m < 10){
+        m = '0' + m;
+      }
+
+      format = h + ":" + m;
+      document.getElementById('time').innerHTML = format;
+      document.getElementById('sec').innerHTML = s;
+    }
+
+    //Initial date and time displayed when page is loaded, is updated
+    //later.
+    document.getElementById('time').innerHTML = format;
+    document.getElementById('sec').innerHTML = s;
+
+    //Updates every 1000ms, or 1sec
+    setInterval(updateTime, 1000);
+    </script>
+
+  </body>
+</html>
